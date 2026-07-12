@@ -228,12 +228,34 @@ function Messages() {
     setShowListOnMobile(false);
   }
 
-  function sendMessage(e) {
+  async function sendMessage(e) {
     e.preventDefault();
     const text = draft.trim();
-    if (!text || connStatus !== 'open') return;
-    wsRef.current.send(JSON.stringify({ text }));
+    if (!text) return;
     setDraft('');
+
+    if (connStatus === 'open' && wsRef.current) {
+      // Live socket — server broadcasts it back to us (and anyone else
+      // connected) over the WebSocket, so no need to touch local state here.
+      wsRef.current.send(JSON.stringify({ text }));
+      return;
+    }
+
+    // Socket isn't connected (offline, still connecting, or dropped) —
+    // send over plain REST instead so the message is never blocked.
+    // The backend still broadcasts it to anyone who IS currently
+    // connected; we just need to add it to our own view manually since
+    // we won't receive our own broadcast without a live socket.
+    try {
+      const saved = await apiRequest(`/chat/conversations/${activeId}/messages/`, {
+        method: 'POST',
+        body: JSON.stringify({ text }),
+      });
+      setMessages((prev) => [...prev, saved]);
+      loadConversations();
+    } catch (err) {
+      setError(`Message not sent: ${err.message}`);
+    }
   }
 
   async function handleCreateConversation(payload) {
@@ -362,12 +384,11 @@ function Messages() {
                 <form className="chat-composer" onSubmit={sendMessage}>
                   <input
                     type="text"
-                    placeholder={connStatus === 'open' ? 'Type a message' : 'Connecting…'}
+                    placeholder="Type a message"
                     value={draft}
-                    disabled={connStatus !== 'open'}
                     onChange={(e) => setDraft(e.target.value)}
                   />
-                  <button type="submit" className="chat-send" disabled={!draft.trim() || connStatus !== 'open'} aria-label="Send message">
+                  <button type="submit" className="chat-send" disabled={!draft.trim()} aria-label="Send message">
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
                       <path d="M3 11.5 20.5 3 12.3 20.5l-2.6-7.4L3 11.5Z" fill="currentColor" />
                     </svg>
