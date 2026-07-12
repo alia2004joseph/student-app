@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import Button from '../components/Button';
 import { authHeaders } from '../context/AuthContext';
+import { API_BASE } from '../config';
 
 /**
  * Attendance — mark daily attendance per class, and browse past records.
  * Two tabs: "Take Attendance" (roster + save) and "History" (read-only log).
  */
 
-const API_BASE = 'http://localhost:8000/api';
 const STATUSES = ['Present', 'Absent', 'Late', 'Excused'];
 
 function todayISO() {

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
+import { API_BASE } from '../config';
 
-const API_BASE = 'http://localhost:8000/api';
 const STORAGE_KEY = 'school_auth';
 
 const AuthContext = createContext(null);
@@ -80,5 +80,3 @@ export function authHeaders() {
 export function getToken() {
   return readStoredAuth()?.token || null;
 }
-
-export { API_BASE };

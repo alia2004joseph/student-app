@@ -2,8 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from './Button';
 import { authHeaders } from '../context/AuthContext';
-
-const API_BASE = 'http://localhost:8000/api';
+import { API_BASE } from '../config';
 
 function todayISO() {
   return new Date().toISOString().slice(0, 10);

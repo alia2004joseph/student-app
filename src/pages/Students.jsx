@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import Button from '../components/Button';
 import { authHeaders } from '../context/AuthContext';
+import { API_BASE } from '../config';
 
 /**
  * Student Management — connected to the Django REST API.
- * GET/POST/PATCH/DELETE all hit http://localhost:8000/api/students/
+ * GET/POST/PATCH/DELETE all hit {API_BASE}/students/
  */
 
-const API_BASE = 'http://localhost:8000/api';
 const CLASSES = ['Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6'];
 const STATUSES = ['Active', 'Pending', 'Inactive'];
 const PAGE_SIZE = 6;

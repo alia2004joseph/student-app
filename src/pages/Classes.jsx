@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Button from '../components/Button';
 import { authHeaders } from '../context/AuthContext';
+import { API_BASE } from '../config';
 
 /**
  * Classes — connected to the Django REST API.
  * Each class can have a homeroom teacher (pulled live from /api/teachers/)
  * and shows a real student count (computed server-side from Students).
  */
-
-const API_BASE = 'http://localhost:8000/api';
 
 const emptyForm = {
   name: '',

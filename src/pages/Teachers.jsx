@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import Button from '../components/Button';
 import { authHeaders } from '../context/AuthContext';
+import { API_BASE } from '../config';
 
 /**
  * Teacher Management — connected to the Django REST API.
  * Same pattern as Students.jsx: GET/POST/PATCH/DELETE against
- * http://localhost:8000/api/teachers/
+ * {API_BASE}/teachers/
  */
 
-const API_BASE = 'http://localhost:8000/api';
 const SUBJECTS = ['Mathematics', 'English', 'Science', 'Social Studies', 'Physical Education', 'Art'];
 const STATUSES = ['Active', 'On Leave', 'Inactive'];
 const PAGE_SIZE = 6;
